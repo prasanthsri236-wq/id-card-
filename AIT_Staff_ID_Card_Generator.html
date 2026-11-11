@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIT Staff ID Card Generator</title>
+<style>
+:root{--navy:#071a36;--navy2:#102b50;--gold:#d6b15e;--ink:#17243a;--muted:#64748b;--line:#dce3ed;--bg:#f3f6fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(115deg,#06152d,#12345e);color:#fff;padding:22px 28px;box-shadow:0 5px 20px #071a3620}
+.head{max-width:1400px;margin:auto;display:flex;align-items:center;gap:15px}.brandmark{width:48px;height:48px;border:2px solid var(--gold);border-radius:12px;display:grid;place-items:center;color:var(--gold);font-weight:900;letter-spacing:1px;font-size:15px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:.4px}.sub{font-size:12px;color:#c8d4e5;letter-spacing:1.4px;text-transform:uppercase}
+main{max-width:1400px;margin:26px auto;padding:0 22px;display:grid;grid-template-columns:minmax(310px,430px) 1fr;gap:24px}
+.panel{background:#fff;border:1px solid #e4eaf2;border-radius:16px;padding:22px;box-shadow:0 8px 28px #14294b0a}
+.panel h2{font-size:16px;margin:0 0 18px;color:var(--navy)}.section{font-size:11px;font-weight:800;color:#9a7733;text-transform:uppercase;letter-spacing:1.2px;margin:19px 0 10px;padding-bottom:7px;border-bottom:1px solid #eee7d8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:11px;font-weight:700;color:#536176}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 11px;font:13px inherit;color:var(--ink);outline:none;background:#fff}input:focus,textarea:focus,select:focus{border-color:#b28c3e;box-shadow:0 0 0 3px #d6b15e22}input[type=file]{padding:8px;font-size:11px}textarea{resize:vertical;min-height:58px}
+.preview-panel{display:flex;flex-direction:column;gap:18px}.preview-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.preview-top h2{margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:9px;padding:10px 14px;font-weight:700;font-size:12px;cursor:pointer;transition:.15s}button:hover{transform:translateY(-1px)}.primary{background:var(--navy);color:white}.gold{background:var(--gold);color:#18243a}.light{background:#edf1f7;color:#23344e}.danger{background:#fff0ef;color:#a63832}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:18px;align-items:start}.card-wrap{min-width:0}.card-label{font-size:11px;font-weight:800;color:#65748a;text-transform:uppercase;letter-spacing:1px;margin:0 0 9px 2px}
+.idcard{width:100%;aspect-ratio:1.594;position:relative;overflow:hidden;border-radius:13px;background:#fff;box-shadow:0 14px 32px #10233f24;border:1px solid #d5dce6}
+.front{background:linear-gradient(135deg,#071a36 0%,#102d54 72%,#173b65 100%);color:white}
+.front:before{content:"";position:absolute;width:260px;height:260px;border:1px solid #d6b15e38;border-radius:50%;right:-105px;top:60px;box-shadow:0 0 0 18px #d6b15e0b,0 0 0 38px #d6b15e08}
+.front:after{content:"";position:absolute;left:0;bottom:0;width:100%;height:8px;background:var(--gold)}
+.card-head{height:22%;display:flex;align-items:center;gap:10px;padding:4% 5%;border-bottom:1px solid #d6b15e55;position:relative;z-index:1}
+.logo{width:42px;height:42px;flex:0 0 42px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:12px;font-weight:900;overflow:hidden;background:#fff}
+.logo img{width:100%;height:100%;object-fit:contain}.school-name{font-size:clamp(10px,1.35vw,17px);font-weight:900;letter-spacing:.7px;line-height:1.1}.school-sub{font-size:clamp(6px,.7vw,9px);color:#e0c986;letter-spacing:1.2px;margin-top:4px}
+.front-body{display:flex;gap:5%;padding:5%;position:relative;z-index:1;height:67%}.photo{width:27%;height:78%;border:2px solid var(--gold);border-radius:8px;overflow:hidden;background:#e8edf4;flex-shrink:0;display:grid;place-items:center;color:#68778b;font-size:9px;text-align:center}.photo img{width:100%;height:100%;object-fit:cover}.details{min-width:0;flex:1;padding-top:1%}.name{font-size:clamp(13px,2vw,23px);font-weight:900;line-height:1.05;color:#fff;text-transform:uppercase;overflow-wrap:anywhere}.designation{font-size:clamp(8px,1.05vw,12px);color:#e5c979;margin:6px 0 13px;font-weight:700}.detail-line{font-size:clamp(7px,.9vw,10px);margin:7px 0;color:#e6edf7;display:flex;gap:5px;overflow-wrap:anywhere}.detail-line b{color:#d9bc73;min-width:55px}
+.back{background:#fff;color:#1c2c43}.back-head{height:19%;background:var(--navy);color:white;padding:5% 6%;display:flex;align-items:center;justify-content:space-between}.back-title{font-size:clamp(11px,1.4vw,16px);font-weight:900;letter-spacing:1px}.back-logo{width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;overflow:hidden;display:grid;place-items:center;color:var(--gold);font-weight:900;font-size:9px}.back-logo img{width:100%;height:100%;object-fit:contain}
+.back-content{padding:5% 6%;font-size:clamp(7px,.9vw,10px);line-height:1.55}.back-row{display:flex;margin:5px 0;gap:6px}.back-row b{width:34%;color:#9a7733;flex-shrink:0}.notice{margin-top:9px;padding:7px 9px;background:#f4f0e7;border-left:3px solid var(--gold);font-size:clamp(6px,.75vw,9px);line-height:1.4}.signature{display:flex;justify-content:space-between;align-items:end;margin-top:12px;font-size:clamp(6px,.75vw,9px)}.sigline{border-top:1px solid #9aa6b6;padding-top:4px;text-align:center;width:42%}
+.hint{font-size:11px;color:var(--muted);line-height:1.5}.status{font-size:12px;color:#a33b35;min-height:16px;margin-top:8px}
+@media(max-width:900px){main{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){header{padding:17px}main{padding:0 12px;margin:14px auto}.panel{padding:16px}.cards{grid-template-columns:1fr}.idcard{max-width:520px}.grid{gap:10px}}
+@media print{body{background:#fff}header,.form-panel,.preview-top,.card-label,.hint{display:none!important}main{display:block;margin:0;padding:0}.preview-panel{display:block}.cards{display:grid;grid-template-columns:1fr 1fr;gap:8mm}.idcard{box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact;border:1px solid #bbb}.panel{border:0;box-shadow:none;padding:0}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brandmark">AIT</div><div><h1>AIT STAFF ID CARD GENERATOR</h1><div class="sub">Alagappa Institute of Technology · Staff Identity System</div></div></div></header>
+<main>
+<section class="panel form-panel">
+<h2>Staff details</h2>
+<div class="section">Identity information</div>
+<div class="grid">
+<div class="field full"><label for="fullName">STAFF NAME *</label><input id="fullName" placeholder="Enter full name"></div>
+<div class="field"><label for="staffId">STAFF ID *</label><input id="staffId" placeholder="AIT-STAFF-001"></div>
+<div class="field"><label for="designation">DESIGNATION *</label><input id="designation" placeholder="e.g. Assistant Professor"></div>
+<div class="field"><label for="department">DEPARTMENT</label><input id="department" placeholder="e.g. Administration"></div>
+<div class="field"><label for="blood">BLOOD GROUP</label><select id="blood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Unknown</option></select></div>
+<div class="field"><label for="phone">PHONE NUMBER</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number"></div>
+<div class="field"><label for="joinDate">DATE OF JOINING</label><input id="joinDate" type="date"></div>
+<div class="field"><label for="validity">VALID UP TO</label><input id="validity" type="date"></div>
+<div class="field full"><label for="email">EMAIL ADDRESS</label><input id="email" type="email" placeholder="name@alagappa.edu.in"></div>
+</div>
+<div class="section">Emergency & address details</div>
+<div class="grid">
+<div class="field"><label for="emergency">EMERGENCY CONTACT</label><input id="emergency" inputmode="numeric" maxlength="10" placeholder="Contact number"></div>
+<div class="field"><label for="relation">RELATION</label><input id="relation" placeholder="e.g. Spouse"></div>
+<div class="field full"><label for="address">ADDRESS</label><textarea id="address" placeholder="Staff address"></textarea></div>
+</div>
+<div class="section">Card assets</div>
+<div class="grid">
+<div class="field"><label for="photoFile">STAFF PHOTO *</label><input id="photoFile" type="file" accept="image/*"></div>
+<div class="field"><label for="logoFile">AIT LOGO</label><input id="logoFile" type="file" accept="image/*"></div>
+</div>
+<p class="hint">Upload a clear passport-size photo and the official AIT logo. If no logo is uploaded, the card displays an AIT monogram.</p>
+<div class="status" id="status" role="status"></div>
+<div class="actions" style="margin-top:12px"><button class="primary" id="downloadFront">Download Front PNG</button><button class="gold" id="downloadBack">Download Back PNG</button><button class="light" id="printBtn">Print card</button><button class="danger" id="resetBtn">Reset</button></div>
+</section>
+<section class="panel preview-panel">
+<div class="preview-top"><h2>Live card preview</h2><span class="hint">PVC card ratio · 1016 × 638 px</span></div>
+<div class="cards">
+<div class="card-wrap"><div class="card-label">Front side</div>
+<div class="idcard front" id="frontCard">
+<div class="card-head"><div class="logo" id="frontLogo">AIT</div><div><div class="school-name">ALAGAPPA INSTITUTE OF TECHNOLOGY</div><div class="school-sub">STAFF IDENTITY CARD</div></div></div>
+<div class="front-body"><div class="photo" id="photoPreview">STAFF<br>PHOTO</div><div class="details"><div class="name" id="pName">STAFF NAME</div><div class="designation" id="pDesignation">Designation</div><div class="detail-line"><b>ID NO.</b><span id="pId">AIT-STAFF-001</span></div><div class="detail-line"><b>DEPT.</b><span id="pDepartment">Administration</span></div><div class="detail-line"><b>BLOOD</b><span id="pBlood">—</span></div><div class="detail-line"><b>PHONE</b><span id="pPhone">—</span></div></div></div>
+</div></div>
+<div class="card-wrap"><div class="card-label">Back side</div>
+<div class="idcard back" id="backCard">
+<div class="back-head"><div class="back-title">STAFF INFORMATION</div><div class="back-logo" id="backLogo">AIT</div></div>
+<div class="back-content">
+<div class="back-row"><b>DATE OF JOINING</b><span id="pJoin">—</span></div>
+<div class="back-row"><b>VALID UP TO</b><span id="pValidity">—</span></div>
+<div class="back-row"><b>EMAIL</b><span id="pEmail">—</span></div>
+<div class="back-row"><b>EMERGENCY</b><span id="pEmergency">—</span></div>
+<div class="back-row"><b>RELATION</b><span id="pRelation">—</span></div>
+<div class="back-row"><b>ADDRESS</b><span id="pAddress">—</span></div>
+<div class="notice">If found, please return this card to the administration office of Alagappa Institute of Technology. This card is the property of the Institute and must be surrendered on request.</div>
+<div class="signature"><span>Authorized signature</span><span class="sigline">Principal / Director</span></div>
+</div>
+</div></div>
+</div>
+<p class="hint">Enter details on the left to update both sides instantly. Download each side as a high-resolution PNG, or use Print card for a two-sided layout preview.</p>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let photoData=null,logoData=null;
+const fields=['fullName','staffId','designation','department','blood','phone','joinDate','validity','email','emergency','relation','address'];
+const map={fullName:'pName',staffId:'pId',designation:'pDesignation',department:'pDepartment',blood:'pBlood',phone:'pPhone',joinDate:'pJoin',validity:'pValidity',email:'pEmail',emergency:'pEmergency',relation:'pRelation',address:'pAddress'};
+function dateFmt(v){if(!v)return '—';const [y,m,d]=v.split('-');return `${d}/${m}/${y}`}
+function update(){fields.forEach(id=>{let v=$(id).value.trim();let out=$(map[id]);if(id==='joinDate'||id==='validity')v=dateFmt(v);if(id==='fullName')v=v||'STAFF NAME';if(id==='staffId')v=v||'AIT-STAFF-001';if(id==='designation')v=v||'Designation';if(id==='department')v=v||'Administration';if(id==='blood'||id==='phone'||id==='email'||id==='emergency'||id==='relation'||id==='address')v=v||'—';out.textContent=v;});}
+fields.forEach(id=>$(id).addEventListener('input',update));
+function loadImage(file,cb){if(!file)return;const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
+$('photoFile').addEventListener('change',e=>loadImage(e.target.files[0],src=>{photoData=src;$('photoPreview').innerHTML='';let im=new Image();im.src=src;$('photoPreview').appendChild(im)}));
+$('logoFile').addEventListener('change',e=>loadImage(e.target.files[0],src=>{logoData=src;['frontLogo','backLogo'].forEach(id=>{$(id).innerHTML='';let im=new Image();im.src=src;$(id).appendChild(im)})}));
+function drawCard(side){
+ const W=1016,H=638,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ const navy='#071a36',navy2='#102d54',gold='#d6b15e';
+ const rr=(ctx,x,y,w,h,r)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r)};
+ const txt=(t,xp,yp,size,color,weight='normal',font='Arial')=>{x.fillStyle=color;x.font=`${weight} ${size}px ${font}`;x.fillText(String(t),xp,yp)};
+ const image=(src,xp,yp,w,h,fit='contain')=>new Promise(resolve=>{if(!src){resolve();return}let im=new Image();im.onload=()=>{let scale=fit==='cover'?Math.max(w/im.width,h/im.height):Math.min(w/im.width,h/im.height);let dw=im.width*scale,dh=im.height*scale;x.save();x.beginPath();x.rect(xp,yp,w,h);x.clip();x.drawImage(im,xp+(w-dw)/2,yp+(h-dh)/2,dw,dh);x.restore();resolve()};im.onerror=resolve;im.src=src});
+ return (async()=>{
+ if(side==='front'){
+ let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,navy);g.addColorStop(1,navy2);x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.strokeStyle='#d6b15e38';x.lineWidth=3;x.beginPath();x.arc(930,320,220,0,Math.PI*2);x.stroke();
+ x.fillStyle=gold;x.fillRect(0,H-10,W,10);x.strokeStyle='#d6b15e77';x.lineWidth=2;x.beginPath();x.moveTo(0,140);x.lineTo(W,140);x.stroke();
+ x.fillStyle='#fff';x.beginPath();x.arc(90,72,42,0,Math.PI*2);x.fill();x.strokeStyle=gold;x.lineWidth=4;x.stroke();
+ if(logoData)await image(logoData,51,33,78,78);else txt('AIT',62,81,25,navy,'bold');
+ txt('ALAGAPPA INSTITUTE OF TECHNOLOGY',155,68,36,'#ffffff','bold');txt('STAFF IDENTITY CARD',157,105,20,'#e0c986','bold');
+ rr(x,58,180,235,355,15);x.fillStyle='#e8edf4';x.fill();x.strokeStyle=gold;x.lineWidth=6;x.stroke();
+ if(photoData)await image(photoData,64,186,223,343,'cover');else{txt('STAFF PHOTO',104,365,24,'#65748a','bold')}
+ const name=$('fullName').value.trim()||'STAFF NAME';txt(name.toUpperCase(),335,230,Math.min(42,Math.max(25,700/(name.length||1))), '#fff','bold');
+ txt($('designation').value||'Designation',337,275,25,'#e5c979','bold');
+ const rows=[['ID NO.',$('staffId').value||'AIT-STAFF-001'],['DEPARTMENT',$('department').value||'Administration'],['BLOOD GROUP',$('blood').value||'—'],['PHONE',$('phone').value||'—']];
+ rows.forEach((r,i)=>{let yy=345+i*52;txt(r[0],338,yy,17,'#d9bc73','bold');txt(r[1],500,yy,19,'#e6edf7')});
+ }else{
+ x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle=navy;x.fillRect(0,0,W,125);txt('STAFF INFORMATION',60,78,34,'#fff','bold');
+ x.beginPath();x.arc(920,62,37,0,Math.PI*2);x.fillStyle='#fff';x.fill();x.strokeStyle=gold;x.lineWidth=3;x.stroke();
+ if(logoData)await image(logoData,887,29,66,66);else txt('AIT',896,71,23,navy,'bold');
+ const rows=[['DATE OF JOINING',dateFmt($('joinDate').value)],['VALID UP TO',dateFmt($('validity').value)],['EMAIL',$('email').value||'—'],['EMERGENCY CONTACT',$('emergency').value||'—'],['RELATION',$('relation').value||'—'],['ADDRESS',$('address').value||'—']];
+ rows.forEach((r,i)=>{let yy=190+i*48;txt(r[0],65,yy,18,'#9a7733','bold');x.fillStyle='#1c2c43';x.font='22px Arial';let val=String(r[1]);x.fillText(val.length>60?val.slice(0,57)+'…':val,355,yy)});
+ x.fillStyle='#f4f0e7';x.fillRect(60,485,896,72);x.fillStyle=gold;x.fillRect(60,485,7,72);x.fillStyle='#334155';x.font='17px Arial';x.fillText('If found, please return this card to the administration office.',82,515);x.fillText('This card is the property of the Institute and must be surrendered on request.',82,540);
+ x.strokeStyle='#9aa6b6';x.lineWidth=2;x.beginPath();x.moveTo(710,590);x.lineTo(950,590);x.stroke();txt('PRINCIPAL / DIRECTOR',735,616,15,'#334155','bold');
+ }
+ return c;
+ })();
+}
+async function download(side){let name=$('fullName').value.trim(),id=$('staffId').value.trim(),des=$('designation').value.trim();if(!name||!id||!des||!photoData){$('status').textContent='Please enter Staff Name, Staff ID, Designation and upload a staff photo.';return}
+ if(!/^\d{10}$/.test($('phone').value.trim())&&$('phone').value.trim()){$('status').textContent='Please enter a valid 10-digit phone number.';return}
+ $('status').textContent='';let c=await drawCard(side);let a=document.createElement('a');a.download=`AIT_${id}_${side}.png`;a.href=c.toDataURL('image/png');a.click();}
+$('downloadFront').onclick=()=>download('front');$('downloadBack').onclick=()=>download('back');$('printBtn').onclick=()=>window.print();
+$('resetBtn').onclick=()=>{if(!confirm('Clear all staff details and uploaded images?'))return;fields.forEach(id=>$(id).value='');$('photoFile').value='';$('logoFile').value='';photoData=logoData=null;$('photoPreview').textContent='STAFF PHOTO';$('frontLogo').textContent='AIT';$('backLogo').textContent='AIT';$('status').textContent='';update()};
+update();
+</script>
+</body>
+</html>
